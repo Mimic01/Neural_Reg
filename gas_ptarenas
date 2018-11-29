@@ -1,0 +1,38 @@
+setwd("C:/Users/Mimic03/Desktop/neuralnet")
+mydata<-read.csv("gas_mag.csv",sep=";")
+attach(mydata)
+#Transformamos los dias de la semana a un codigo numerico
+semanadia<-mydata$DiaSemana
+semanadia.factor<-factor(semanadia)
+dia_semana<-as.numeric(semanadia.factor)
+dia_semana<-as.data.frame(dia_semana)
+mydata[["DiaSemana"]]<-dia_semana
+#MAX-MIN NORMALIZATION
+normalize<-function(x) {
+  return ((x - min(x)) / (max(x) - min(x)))
+}
+maxmindf<-as.data.frame(lapply(mydata, normalize))
+#TRAINING AND TEST DATA
+trainset<-maxmindf[1:1600, ]
+testset<-maxmindf[1601:2630, ]
+#NEURAL RUN
+library(neuralnet)
+nn<-neuralnet(Consumo~Dia+Mes+Año+dia_semana+Feriado,data=trainset, hidden=c(5,2), linear.output=TRUE, threshold=0.01)
+nn$result.matrix
+plot(nn)
+#VALIDATION
+temp_test <- subset(testset, select = c("Dia","Mes","Año","dia_semana","Feriado"))
+head(temp_test)
+nn.results<-compute(nn,temp_test)
+results<-data.frame(actual=testset$Consumo,prediction=nn.results$net.result)
+results
+#plot(testset$Consumo,nn.results,col='blue',pch=16,ylab="predicted rating NN",xlab="real rating")
+#abline(0,1)
+#ACCURACY
+predicted=results$prediction*abs(diff(range(Consumo)))+min(Consumo)
+actual=results$actual*abs(diff(range(Consumo)))+min(Consumo)
+comparison=data.frame(predicted,actual)
+deviation=((actual-predicted)/actual)
+comparison=data.frame(predicted,actual,deviation)
+accuracy=1-abs(mean(deviation))
+accuracy
