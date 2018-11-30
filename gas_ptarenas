@@ -45,7 +45,8 @@ length(Date)
 pred<-comparison[1:8,]
 pred$Date<-Date
 g<-ggplot(pred,aes(x=Date,y=predicted))+geom_point()+geom_smooth(method="lm")
-plot(g)
+#AGREGAR LA METRICA DEL CONSUMO DE GAS
+g+labs(title="Tiempo Vs Consumo", subtitle="1 a 7 días", y="Consumo [mm3]", x="Tiempo (Año 2018)", caption="Consumo Gas Región de Magallanes")
 
 #de 1 a 5 semanas
 Date2<-seq(as.Date("2018/11/30"),as.Date("2019/1/4"),"days")
@@ -53,7 +54,7 @@ length(Date2)
 pred2<-comparison[9:44,]
 pred2$Date2<-Date2
 g2<-ggplot(pred2,aes(x=Date2,y=predicted))+geom_point()+geom_smooth(method="lm")
-plot(g2)
+g2+labs(title="Tiempo Vs Consumo", subtitle="1 a 5 semanas", y="Consumo [mm3]", x="Tiempo (Año 2018)", caption="Consumo Gas Región de Magallanes")
 #de 1 a 3 meses
 Date3<-seq(as.Date("2018/11/30"), as.Date("2019/2/28"), "days")
 length(Date3)
@@ -61,13 +62,13 @@ pred3<-comparison[45:135,]
 pred3$Date3<-Date3
 pred3<-pred3[c(4,1,2,3)]
 g3<-ggplot(pred3,aes(x=Date3,y=predicted))+geom_point()+geom_smooth(method="lm")
-plot(g3)
+g3+labs(title="Tiempo Vs Consumo", subtitle="1 a 3 meses", y="Consumo [mm3]", x="Tiempo (Año 2018/2019)", caption="Consumo Gas Región de Magallanes")
 
 # 1 año
 Date4<-seq(as.Date("2018/11/30"), as.Date("2019/12/30"), "days")
 pred4<-comparison[1:396,]
 pred4$Date4<-Date4
 g4<-ggplot(pred4,aes(x=Date4,y=predicted))+geom_point()+geom_smooth(method="lm")
-plot(g4)
+g4+labs(title="Tiempo Vs Consumo", subtitle="1 año", y="Consumo [mm3]", x="Tiempo (Año 2018/2019)", caption="Consumo Gas Región de Magallanes")
 
 
