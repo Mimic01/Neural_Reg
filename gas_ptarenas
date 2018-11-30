@@ -26,8 +26,6 @@ head(temp_test)
 nn.results<-compute(nn,temp_test)
 results<-data.frame(actual=testset$Consumo,prediction=nn.results$net.result)
 results
-#plot(testset$Consumo,nn.results,col='blue',pch=16,ylab="predicted rating NN",xlab="real rating")
-#abline(0,1)
 #ACCURACY
 predicted=results$prediction*abs(diff(range(Consumo)))+min(Consumo)
 actual=results$actual*abs(diff(range(Consumo)))+min(Consumo)
@@ -36,6 +34,7 @@ deviation=((actual-predicted)/actual)
 comparison=data.frame(predicted,actual,deviation)
 accuracy=1-abs(mean(deviation))
 accuracy
+
 plot(x=comparison$predicted,y=comparison$actual,col=c("blue","red"),main="Predicted vs Actual Results",xlab="Predicted",ylab="Actual")
 abline(0,1)
 
